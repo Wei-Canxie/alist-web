@@ -158,7 +158,7 @@ const insertKatexCSS = once(() => {
   const link = document.createElement("link")
   link.rel = "stylesheet"
   link.href =
-    "https://registry.npmmirror.com/katex/0.16.11/files/dist/katex.min.css"
+    "https://registry.npmmirror.com/katex/0.16.8/files/dist/katex.min.css"
   document.head.appendChild(link)
 })
 
@@ -184,10 +184,6 @@ export function Markdown(props: {
     content = content.replace(/!\[.*?\]\((.*?)\)/g, (match) => {
       const name = match.match(/!\[(.*?)\]\(.*?\)/)![1]
       let url = match.match(/!\[.*?\]\((.*?)\)/)![1]
-      // 检查是否为 base64 编码的图片
-      if (url.startsWith("data:image/")) {
-        return match // 如果是 base64 编码的图片，直接返回原标签
-      }
       if (
         url.startsWith("http://") ||
         url.startsWith("https://") ||
@@ -237,11 +233,7 @@ export function Markdown(props: {
         />
       </Show>
       <Show when={!isString}>
-        <EncodingSelect
-          encoding={encoding()}
-          setEncoding={setEncoding}
-          referenceText={props.children}
-        />
+        <EncodingSelect encoding={encoding()} setEncoding={setEncoding} />
       </Show>
       <MarkdownToc disabled={!props.toc} markdownRef={markdownRef()!} />
     </Box>
